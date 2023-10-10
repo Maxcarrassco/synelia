@@ -16,5 +16,11 @@ class NoteSchema(BaseModel):
     note: str
     student_id: int
 
+class ClassSchema(BaseModel):
+    label: str
+
+class SubjectSchema(BaseModel):
+    label: str
+
 class NoteStudId(BaseModel):
     student_id: int

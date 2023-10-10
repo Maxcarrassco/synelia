@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from api.v1.routers.student import student_router
 from api.v1.routers.note import note_router
+from api.v1.routers.s_class import class_router
+from api.v1.routers.subject import subject_router
 
 
 app = FastAPI(
@@ -9,12 +11,10 @@ app = FastAPI(
         )
 
 
-@app.get("/status")
-def status():
-    return { "status": "OK" }
-
 app.include_router(student_router)
 app.include_router(note_router)
+app.include_router(class_router)
+app.include_router(subject_router)
 
 if __name__ == "__main__":
     import uvicorn
