@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from typing import List
 from sqlalchemy import String
 from models import base_model
@@ -9,5 +11,5 @@ class Class(base_model.BaseModel):
     from models.subject import Subject
     __tablename__ = "class"
     label: Mapped[str] = mapped_column(String(250))
-    students: Mapped[List[Student]] = relationship()
+    students: Mapped[List["Student"]] = relationship(back_populates="classes")
     subjects: Mapped[List[Subject]] = relationship(secondary=association_table)

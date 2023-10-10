@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from sqlalchemy import Column, ForeignKey, Table
 from models.base_model import BaseModel
 

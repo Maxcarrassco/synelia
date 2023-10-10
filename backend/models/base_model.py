@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from typing import Any
 from sqlalchemy import BigInteger, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -46,7 +48,8 @@ class BaseModel(DeclarativeBase):
     def to_dict(self):
         data = self.__dict__.copy()
         del data["_sa_instance_state"]
-        data["created_at"] = data["created_at"].isoformat()
-        if data["updated_at"]:
+        if data.get("created_at") and isinstance(data.get("created_at"), datetime):
+            data["created_at"] = data["created_at"].isoformat()
+        if data.get("updated_at") and isinstance(data.get("updated_at"), datetime):
             data["updated_at"] = data["updated_at"].isoformat()
         return data

@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+
+from datetime import datetime
 import os
 from typing import Union
 from dotenv import load_dotenv
@@ -77,9 +80,10 @@ class DBStorage:
             return
         self.__session.delete(ob)
     
-    def update(self, ob: BaseModel) -> None:
+    def update(self, ob: BaseModel, id: int) -> None:
         """Update the object passed in db session"""
         if not self.__session:
             return
         cls = type(ob)
-        self.__session.query(cls).update(ob.to_dict())
+        ob.updated_at = datetime.utcnow()
+        self.__session.query(cls).where(cls.id == id).update(ob.to_dict())
