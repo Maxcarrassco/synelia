@@ -1,6 +1,6 @@
 import os
 from typing import Union
-from dotenv import load_dotenv as _
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models.student import Student
@@ -8,6 +8,8 @@ from models.note import Note
 from models.subject import Subject
 from models.s_class import Class
 from models.base_model import BaseModel
+
+load_dotenv()
 
 DBURL = os.environ["DB_URL"]
 
@@ -18,7 +20,7 @@ class DBStorage:
     def __init__(self) -> None:
         self.__engine = create_engine(DBURL, pool_pre_ping=True)
 
-    def new(self, ob: Union[Class, Student, Note, Subject]):
+    def new(self, ob: BaseModel):
         """Add new objects to the current db session"""
         if not self.__session:
             return
@@ -36,12 +38,9 @@ class DBStorage:
         """Commit the current session to db"""
         if not self.__session:
             return
-        try:
-            self.__session.commit()
-        except Exception:
-            self.__session.rollback()
+        self.__session.commit()
 
-    def all(self, ob: Union[Class, Student, Note, Subject], offset: int = 0, limit: int = 40):
+    def all(self, ob: Union[BaseModel, None] = None, offset: int = 0, limit: int = 40):
         """Get the specific list of objects or all types of object from db"""
         objs={}
         if not self.__session:
@@ -50,7 +49,7 @@ class DBStorage:
             for model in [Class, Student, Note, Subject]:
                 result = self.__session.query(model).offset(offset).limit(limit).all()
                 for obj in result:
-                    key = f"{type(model).__name__}.{obj.id}"
+                    key = f"{type(obj).__name__}.{obj.id}"
                     objs[key] = obj
             return objs
         result = self.__session.query(ob).offset(offset).limit(limit).all()
@@ -59,9 +58,28 @@ class DBStorage:
             objs[key] = obj
         return objs
 
+    def get_obj_by_id(self, ob: BaseModel, id: int) -> Union[BaseModel, None]:
+        if not self.__session:
+            return None
+        result = self.__session.query(ob).where(ob.id == id).first()
+        return result
+
 
     def close_session(self):
-        """Close he current session"""
+        """Close the current session"""
         if not self.__session:
             return
         self.__session.close()
+
+    def delete(self, ob: BaseModel) -> None:
+        """Delete the object passed from db session"""
+        if not self.__session:
+            return
+        self.__session.delete(ob)
+    
+    def update(self, ob: BaseModel) -> None:
+        """Update the object passed in db session"""
+        if not self.__session:
+            return
+        cls = type(ob)
+        self.__session.query(cls).update(ob.to_dict())
