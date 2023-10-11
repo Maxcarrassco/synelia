@@ -4,7 +4,27 @@
 </script>
 
 
-{#if data.tab === "Student"}
+{#if data.tab === "Student" && data.grade == "true" }
+<form class="flex justify-center flex-col items-center my-[10%] p-8 border-4 mx-[15%] rounded-md" method="POST" action="?/grade">
+  <div class="w-2/5 mt-4">
+    <label for="grade" class="block text-sm font-medium leading-6 text-gray-900">Grade</label>
+    <input id="grade" name="grade" type="number" placeholder="Type the student grade here" required class="block w-full p-8 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+  </div>
+  <div class="w-2/5 mt-4">
+    <label for="studentId" class="block text-sm font-medium leading-6 text-gray-900">Student ID</label>
+    <input id="studentId" name="studentId" type="number" placeholder="Type the student ID here" required class="block w-full p-8 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+  </div>
+  <div class="w-2/5 mt-4">
+    <label for="subjectId" class="block text-sm font-medium leading-6 text-gray-900">Subject ID</label>
+    <input id="subjectId" name="subjectId" type="number" placeholder="Type the Subject ID here" required class="block w-full p-8 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+  </div>
+  <div class="md:flex md:w-1/5 md:p-4 md:justify-between">
+   <a class="btn btn-secondary" href={url}>Cancel</a>
+   <button class="btn btn-primary">Save</button>
+  </div>
+</form>
+
+{:else if data.tab === "Student"}
 <form class="flex justify-center flex-col items-center my-[10%] p-8 border-4 mx-[15%] rounded-md" method="POST" action="?/student">
   <div class="w-2/5">
     <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
