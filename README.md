@@ -3,8 +3,8 @@ This is an assessment for synelia SE job.
 
 # Environment Requirement
 - nodejs v18.x
-- python3.x
-- MySQL
+- python v3.x
+- MySQL v8.x
 
 # Environment Tested On
 - Ubuntu 22.04 AMD Processor
