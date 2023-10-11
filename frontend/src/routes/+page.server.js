@@ -2,9 +2,14 @@ import { getData } from '$lib/request_utils.js';
 
 export const load = async ({ url }) => {
 	const tab = await url.searchParams.get("tab");
-	const data = await getData("students");
+	let route = "students";
+	if (tab === "Subject") {
+		route = "subjects";
+	} else if (tab === "Class") {
+		route = "classes";
+	}
+	const data = await getData(route);
 	return {
-		student: await data.json(),
-		tab,
+		obj: await data.json(),
 	}
 }

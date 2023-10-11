@@ -10,6 +10,7 @@ class Student(base_model.BaseModel):
     __tablename__ = "students"
     name: Mapped[str] = mapped_column(String(250))
     gender: Mapped[str] = mapped_column(String(250))
+    age: Mapped[int] = mapped_column()
     class_id: Mapped[Optional[int]] = mapped_column(ForeignKey("class.id"))
     classes: Mapped[Optional["Class"]] = relationship(back_populates="students")
     notes: Mapped[List[Note]] = relationship()

@@ -48,6 +48,7 @@ def update_student(id: int, stud: StudentSchema):
         return JSONResponse({ "msg": "Student not Found" }, 404)
     student.gender = stud.gender.value
     student.name = stud.name
+    student.age = stud.age;
     try:
         storage.update(student, id)
         storage.save()

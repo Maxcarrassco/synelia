@@ -6,7 +6,7 @@ from models import storage
 from models.subject import Subject
 from schemas.schemas import SubjectSchema
 
-subject_router = APIRouter(prefix="/api/v1/sujects", tags=["Subjects"])
+subject_router = APIRouter(prefix="/api/v1/subjects", tags=["Subjects"])
 
 @subject_router.get("/")
 def get_sujects():

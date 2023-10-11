@@ -10,6 +10,7 @@ class Gender(Enum):
 
 class StudentSchema(BaseModel):
     name: str
+    age: int
     gender: Gender
 
 class NoteSchema(BaseModel):
