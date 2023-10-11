@@ -25,7 +25,7 @@ pip install -r requirement.txt
 touch .env
 // inside .env file
 DB_URL=mysql://{YOUR_DB_USER_NAME}:{YOUR_DB_PASSWORD}@{HOST}:{PORT}/{DBNAME} // ensure to create a database
-
+```
 ### Command to start the API Server
 ```
 // inside the backend directory
