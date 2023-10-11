@@ -29,7 +29,6 @@ DB_URL=mysql://{YOUR_DB_USER_NAME}:{YOUR_DB_PASSWORD}@{HOST}:{PORT}/{DBNAME} // 
 ### Command to start the API Server
 ```
 // inside the backend directory
-```
 python3 -m api.v1.app
 ```
 
