@@ -4,7 +4,10 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from models import storage
 from models.student import Student
+from models.subject import Subject
 from schemas.schemas import StudentSchema
+from schemas.schemas import GradeSchema
+from schemas.schemas import GradeSubId
 
 student_router = APIRouter(prefix="/api/v1/students", tags=["Students"])
 
@@ -68,3 +71,40 @@ def delete_student(id: int):
     except Exception:
         raise HTTPException(500, detail="Oops! Something went wrong! We are working on it!")
     return student.to_dict()
+
+@student_router.get("/{id}/grades")
+def get_grades(id: int):
+    student = storage.get_obj_by_id(Student, id)
+    if not student:
+        return JSONResponse({ "msg": "Student not Found" }, 404)
+    return [ v.to_dict() for v in student.grades]
+
+
+@student_router.post("/{id}/grades", status_code=201)
+def record_grade(gradeSchema: GradeSchema, id: int):
+    student = storage.get_obj_by_id(Student, id)
+    if not student:
+        return JSONResponse({ "msg": "Student not Found" }, 404)
+    subject = storage.get_obj_by_id(Subject, gradeSchema.subject_id)
+    if not subject:
+        return JSONResponse({ "msg": "Subject not Found" }, 404)
+    try:
+        student.add_grade(gradeSchema.subject_id, gradeSchema.grade)
+        storage.save()
+    except Exception:
+        raise HTTPException(500, detail="Oops! Something went wrong! We are working on it!")
+    return { "msg": "Grade recorded Successfully!"}
+
+
+@student_router.post("/{id}/grades/avg")
+def avg_grade(subject_id: GradeSubId, id: int):
+    student = storage.get_obj_by_id(Student, id)
+    if not student:
+        return JSONResponse({ "msg": "Student not Found" }, 404)
+    subject = storage.get_obj_by_id(Subject, subject_id.subject_id)
+    if not subject:
+        return JSONResponse({ "msg": "Subject not Found" }, 404)
+    avg = student.compute_avg_grade(subject_id.subject_id)
+    if int(avg) <= 0:
+        return { "msg": "You have not taken any exam!" }
+    return { "avg": avg, "subject": subject.label }

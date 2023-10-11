@@ -23,5 +23,12 @@ class ClassSchema(BaseModel):
 class SubjectSchema(BaseModel):
     label: str
 
+class GradeSchema(BaseModel):
+    grade: int
+    subject_id: int
+
+class GradeSubId(BaseModel):
+    subject_id: int
+
 class NoteStudId(BaseModel):
     student_id: int
