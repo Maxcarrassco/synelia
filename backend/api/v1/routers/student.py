@@ -8,6 +8,7 @@ from models.subject import Subject
 from schemas.schemas import StudentSchema
 from schemas.schemas import GradeSchema
 from schemas.schemas import GradeSubId
+from collections import defaultdict
 
 student_router = APIRouter(prefix="/api/v1/students", tags=["Students"])
 
@@ -94,6 +95,29 @@ def record_grade(gradeSchema: GradeSchema, id: int):
     except Exception:
         raise HTTPException(500, detail="Oops! Something went wrong! We are working on it!")
     return { "msg": "Grade recorded Successfully!"}
+
+
+@student_router.get("/{id}/grades/avg")
+def get_all_sub_avg_grade(id: int):
+    student = storage.get_obj_by_id(Student, id)
+    if not student:
+        return JSONResponse({ "msg": "Student not Found" }, 404)
+    obj = {}
+    for grade in student.grades:
+        subject = storage.get_obj_by_id(Subject, grade.subject_id)
+        key = f"{subject.label}.{subject.id}"
+        if key in obj:
+            obj[key].append(grade.grade)
+        else:
+            obj[key] = [grade.grade]
+    averages = {}
+    for key, grade in obj.items():
+        name, k = key.split(".")
+        avg = sum(grade) / len(grade)
+        averages[key] = { "subject": name, "subject_id": k, "avg": avg}
+    return averages
+
+
 
 
 @student_router.post("/{id}/grades/avg")
