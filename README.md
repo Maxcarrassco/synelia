@@ -32,6 +32,11 @@ DB_URL=mysql://{YOUR_DB_USER_NAME}:{YOUR_DB_PASSWORD}@{HOST}:{PORT}/{DBNAME} // 
 python3 -m api.v1.app
 ```
 
+### Access API DOC
+```
+localhost:8000
+```
+
 ### Open a new tab, move into the frontend directory, and install the frontend dependencies
 ```
 cd frontend
